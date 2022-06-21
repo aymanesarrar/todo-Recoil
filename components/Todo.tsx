@@ -1,26 +1,43 @@
-import { all, isActive, isCompleted } from "../utils/states";
+import { all, isActive, isCompleted, Todos } from "../utils/states";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { MouseEventHandler } from "react";
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 type Props = {
-  title: string;
+  todo: Todos;
 };
-const Todo = ({ title }: Props) => {
-  //   const [AllItems, setAllItems] = useRecoilState(all);
-  const [isComplete, setIsComplete] = useState(false);
-  const [isActive, setIsActive] = useState(true);
-  //   const all_items = useRecoilValue(all);
-  const handleClick = () => {
-    setIsComplete(!isComplete);
-    setIsActive(!isActive);
+const Todo = ({ todo }: Props) => {
+  const [allTodos, setAllTodos] = useRecoilState<Todos[]>(all);
+  const [checked, setChecked] = useState(false);
+  const [is_active, setIs_active] = useRecoilState(isActive);
+  const [is_completed, setIs_Completed] = useRecoilState(isCompleted);
+  const handleClick: MouseEventHandler = (e) => {
+    const target = e.target as HTMLElement;
+    const new_arr: Todos[] = [];
+    for (let i = 0; i < allTodos.length; i++) {
+      if (allTodos[i].title === target.innerText) {
+        new_arr.push({
+          title: allTodos[i].title,
+          completed: true,
+          active: false,
+          checked: true,
+        });
+      } else new_arr.push(allTodos[i]);
+    }
+    setAllTodos((allTodos) => new_arr);
   };
-  console.log(isActive);
   return (
     <li>
       <label className="flex items-center cursor-pointer">
-        <input type="checkbox" className="h-4 w-4" />
-        <span className="ml-5 text-lg" onClick={handleClick}>
-          {title}
+        <input
+          type="checkbox"
+          className="h-4 w-4"
+          onChange={() => setChecked(todo.checked)}
+          checked={todo.checked}
+        />
+        <span
+          className={`ml-5 text-lg ${todo.checked ? "line-through" : ""}`}
+          onClick={handleClick}
+        >
+          {todo.title}
         </span>
       </label>
     </li>

@@ -1,9 +1,11 @@
-import { useRecoilState } from "recoil";
-import { all, input } from "../utils/states";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { all, input, isActive, isCompleted, Todos } from "../utils/states";
 import { ChangeEvent, FormEvent, FormEventHandler } from "react";
 export const Form = () => {
   const [todoInput, setTodoInput] = useRecoilState(input);
-  const [todos, setTodos] = useRecoilState<string[]>(all);
+  const [todos, setTodos] = useRecoilState<Todos[]>(all);
+  const is_active = useRecoilValue(isActive);
+  const is_completed = useRecoilValue(isCompleted);
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setTodoInput(e.target.value);
@@ -12,8 +14,12 @@ export const Form = () => {
     e.preventDefault();
     setTodos((todos) => [
       ...todos,
-      todoInput,
-      // { title: todoInput, completed: false, active: true },
+      {
+        title: todoInput,
+        completed: is_completed,
+        active: is_active,
+        checked: false,
+      },
     ]);
     setTodoInput("");
   };

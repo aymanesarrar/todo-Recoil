@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Form } from "../components/Form";
-import { all, choice } from "../utils/states";
+import { all, choice, Todos } from "../utils/states";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { All } from "../components/All";
 import { MouseEventHandler } from "react";
@@ -10,7 +10,7 @@ import { Active } from "../components/Active";
 
 const Home: NextPage = () => {
   const [filter, setFilter] = useRecoilState(choice);
-  const todos = useRecoilValue<string[]>(all);
+  const todos = useRecoilValue<Todos[]>(all);
 
   const handleClick: MouseEventHandler = (e) => {
     const target = e.target as HTMLElement;
