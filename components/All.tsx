@@ -1,4 +1,3 @@
-import { Todos } from "../utils/states";
 import Todo from "./Todo";
 
 type Props = {
