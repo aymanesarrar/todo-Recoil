@@ -16,9 +16,9 @@ const Todo = ({ todo }: Props) => {
       if (allTodos[i].title === target.innerText) {
         new_arr.push({
           title: allTodos[i].title,
-          completed: true,
-          active: false,
-          checked: true,
+          completed: !allTodos[i].completed,
+          active: !allTodos[i].active,
+          checked: !allTodos[i].checked,
         });
       } else new_arr.push(allTodos[i]);
     }
